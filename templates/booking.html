@@ -1,0 +1,125 @@
+{%extends 'base.html'%}
+{%load static%}
+{% block content%}
+        <!-- Start Bottom Header -->    
+        <div class="order-area area-padding">
+        	<div class="container">
+        		<div class="row">
+        			<div class="col-md-offset-4 col-md-4 col-sm-12">
+						<div class="section-headline text-center">
+						    <h3>{{title}}</h3>
+						</div>
+        				<!-- Start Order From -->
+                        <div class="order-form">
+                            <div class="row">
+								{% include 'partial/_messages.html'%}
+                                <form id="bookingform" name="bookingform" method="POST" class="contact-form">
+									<!-- single feilds -->
+									{% csrf_token %}
+									{%for field in form %}
+									<div class="sign-feilds">
+										<div class="input-text">
+											{{field.label}}:
+											{{field}}
+											<div class="help-block with-errors">
+												{% if field.errors %}
+													{%for error in field.errors %}
+														<div class="alert alert-danger">{{error}}</div>
+													{%endfor%}
+												{% endif %}
+												</div>
+										</div>
+									</div>
+									{% endfor %}
+									<!-- single feilds -->
+									<div class="sign-feilds">
+										<div class="submit-btn">
+											<button type="submit" id="submit_mg" class="add-btn contact-btn">Search</button>
+											<div id="msg_Submit" class="h3 text-center hidden"></div>
+										</div>
+									</div>
+								</form> 
+                            </div>
+                        </div>
+                        <!-- End Order Form -->
+        			</div>
+				</div>
+				{% if allcleaner %}
+				<br>
+					<div class="row">
+						<h2 class="text-center">Available Expert</h2>
+						{%for cleaner in allcleaner%}
+						<div class="col-md-3 col-sm-6 col-xs-12">
+							<div class="table-list">
+								<ol>
+                                    <li class="check">
+										Name :	{{cleaner.user.first_name}}
+									</li>
+									<li class="check">
+										Rating : {{cleaner.quality_score}}
+									</li>
+									<li class="check">
+										<a href="{%url 'hire' cleaner.user %}" class="quote-btn">Hire</a>
+									</li>
+								</ol>
+							</div>
+
+						</div>
+						{% endfor %}
+					</div>
+					{%else %}
+					<br>
+					<div class="row">
+						<h2 class="text-center">Opps sorry Experts not available</h2>
+					</div>
+
+				{% endif %}
+
+        	</div>
+        </div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+		<script>
+			// Wait for the DOM to be ready
+		$(function() {
+		// Initialize form validation on the registration form.
+		// It has the name attribute "registration"
+		$("form[name='bookingform']").validate({
+	  		// Specify validation rules
+	  		rules: {
+			// The key name on the left side is the name attribute
+			// of an input field. Validation rules are defined
+			// on the right side
+				city:{
+					required:true,
+				}, 
+				date: {
+					required: true,
+					date:true,
+				},
+				slot:{
+					required:true,
+				}
+	
+			},
+	  		// Specify validation error messages
+	  		messages: {
+				city: {
+					required:"Please select city",
+				},
+				date: {
+					required: "Please provide a date",
+					date:"please enter proper date",
+				},
+				slot:{
+					required:"please select slot.",
+				}
+			},
+			// Make sure the form is submitted to the destination defined
+			// in the "action" attribute of the form when valid
+			submitHandler: function(form) {
+				form.submit();
+			}
+		});
+  	});
+</script>
+     {%endblock content %}

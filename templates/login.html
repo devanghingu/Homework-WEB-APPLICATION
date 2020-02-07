@@ -1,0 +1,95 @@
+{%extends 'base.html'%}
+{%load static%}
+{% block content%}
+        <!-- Start Bottom Header -->    
+        <div class="order-area area-padding">
+        	<div class="container">
+        		<div class="row">
+        			<div class="col-md-offset-4 col-md-4 col-sm-12">
+        				<div class="section-headline text-center">
+						    <h3>{{title}}</h3>
+						</div>
+        				<!-- Start Order From -->
+                        <div class="order-form">
+                            <div class="row">
+								{% include 'partial/_messages.html'%}
+                                <form id="loginform" name="loginform" method="POST" class="contact-form">
+									<!-- single feilds -->
+									{% csrf_token %}
+									<div class="sign-feilds">
+										{%for field in form%}
+											<div class="input-text">
+												{{field.label}}
+												{{field}}
+												<div class="help-block with-errors">
+												{% if field.errors %}
+													{%for error in field.errors %}
+														<div class="alert alert-danger">{{error}}</div>
+													{%endfor%}
+												{% endif %}
+												</div>
+											</div>
+										{%endfor%}
+									</div>
+									<!-- single feilds -->
+									<div class="sign-feilds">
+										<div class="submit-btn">
+											<button type="submit" id="submit_mg" class="add-btn contact-btn">Submit</button>
+											<div id="msg_Submit" class="h3 text-center hidden"></div>
+											
+										</div>
+									</div>
+								</form> 
+                            </div>
+                        </div>
+                        <!-- End Order Form -->
+        			</div>
+        		</div>
+        	</div>
+        </div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+		<script>
+			// Wait for the DOM to be ready
+		$(function() {
+		// Initialize form validation on the registration form.
+		// It has the name attribute "registration"
+		$("form[name='loginform']").validate({
+	  		// Specify validation rules
+	  		rules: {
+			// The key name on the left side is the name attribute
+			// of an input field. Validation rules are defined
+			// on the right side
+				username:{
+					required:true,
+					digits:true,
+					minlength:10,
+					maxlength:10,
+				}, 
+				password: {
+				required: true,
+				minlength: 5
+				}
+			},
+	  		// Specify validation error messages
+	  		messages: {
+				username: {
+					required:"Please enter your contact",
+					digits:"contact number must be in digit.",
+					minlength:"Pelase enter 10 digit contact number",
+					maxlength:"Pelase enter 10 digit contact number",
+				},
+				password: {
+					required: "Please provide a password",
+					minlength: "Your password must be at least 5 characters long"
+				},
+			},
+			// Make sure the form is submitted to the destination defined
+			// in the "action" attribute of the form when valid
+			submitHandler: function(form) {
+				form.submit();
+			}
+		});
+  	});
+</script>
+
+     {%endblock content %}

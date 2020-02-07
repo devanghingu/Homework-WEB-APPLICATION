@@ -1,0 +1,149 @@
+{%extends 'base.html'%}
+{%load static %}
+{%block content%}
+<div class="welcome-area welcome-area-4 area-padding">
+    <div class="container">
+      <div class="banner-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-sm-10 col-xs-12">
+                    <div class="banner-content">
+                        <h4>find your clean expert now </h4>
+                        <div class="banner-contact">
+                            <!-- <span class="call-us"><i class="icon icon-phone-handset"></i>Call us:  +1313-4325432 </span><span>Or</span> -->
+                            <a class="banner-btn" href="{%url 'newbooking' %}">book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <br/>
+        <div class="row">
+          {% include 'partial/_messages.html' %}
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="section-headline ">
+                    <h3>Your profile </h3>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6 col-md-4">
+                      <img src="http://placehold.it/380x400" alt="" class="img-rounded img-responsive" />
+                  </div>
+                  <div class="col-sm-6 col-md-8">
+                    <h4> {{ userdata.get_full_name }}</h4>
+                    <p>Contact: {{userdata.contact}} <br/>
+                      <i class="glyphicon glyphicon-gift"></i>
+                      Account created:{{userdata.date_joined}}</p>
+                        
+                        {% if userdata.is_cleaner %}<hr/>
+                          <br/> Cleaner Status : True.
+                          <p> 
+                            Overroll rating : <b>{{cleanerprofile.quality_score}}</b><br/>
+                            totoal complated job : <b>{{cleanerprofile.total_completed_job}}</b><br/>
+                             working city : <b>{{cleanerprofile.working_city}}</b> 
+                          </p> 
+
+                        
+                        {% else %}
+                        <a href="{%url 'becomecleaner' %}" class="quote-btn">Become Cleaner</a>
+                        
+                        <br/> <br/>
+                        {%endif %}
+                        <br/>
+                        <!-- Split button -->
+                      <div class="btn-group">
+                          <button type="button" class="quote-btn">Edit</button>
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                {%if allbookings %}
+                <table class="table">     
+                    <div class="section-headline ">
+                        <h3>Your all bookings </h3>
+                    </div>
+                    <thead>
+                      <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">ratings</th>
+                        <th scope="col">city</th>
+                        <th scope="col">Date</th>
+
+                        <th scope="col">Time</th>
+
+                        <th scope="col">status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {%for booking in allbookings%}
+                      <tr>
+                        <th scope="row">{{booking.id}}</th>
+                        <td>{{booking.cleaner_id.user.first_name}}</td>
+                        <td>{{booking.cleaner_id.quality_score}}</td>
+                        <td>{{booking.city}}</td>
+                        <td>{{booking.dateofcleaning}}</td>
+
+                        <td>{{booking.timeslot}}</td>
+                        
+                        <td>
+                            <input type="checkbox" class="form" name="jobstatus" id="jobstatus" >
+                        </td>
+                      </tr>
+                      {%endfor %}
+                    </tbody>
+                  </table>
+                  {%else %}
+                    <h5 class="text-center">You doen't have any past bookings </h5>
+                {%endif %}
+            </div>
+        </div>
+        <br/>
+        <hr/>
+        <br/>
+
+        <div class="row">
+          <div class="col-md-offset-2 col-md-8 col-sm-6 col-xs-12">
+            {%if customerbooking %}
+            <table class="table">     
+                <div class="section-headline ">
+                    <h3 class="text-center">Your all customer booking </h3>
+                </div>
+                <thead>
+                  <tr>
+                    <th scope="col">Customer_Id</th>
+                    <th scope="col">Booking ID</th>
+                    <th scope="col">City</th>
+                    <th scope="col">Date of clean</th>
+                    <th scope="col">Date of clean</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {%for booking in customerbooking%}
+                  <tr>
+                    <th scope="row">{{booking.id}}</th>
+                    <td>{{booking.customer_id}}</td>
+                    <td>{{booking.id}}</td>
+                    <td>{{booking.city}}</td>
+                    <td>{{booking.dateofcleaning}}</td>
+                    <td>{{booking.timeslot}}</td>
+                    <td>
+                      {{booking.job_complated}}
+                    </td>
+                  </tr>
+                  {%endfor %}
+                </tbody>
+              </table>
+              {%else %}
+                <h5 class="text-center">You doen't have any past customer booking </h5>
+            {%endif %}
+        </div>
+        </div>
+    </div>
+</div>
+
+    
+{%endblock content%}
