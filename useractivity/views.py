@@ -114,7 +114,7 @@ class BecomeCleaner(View):
                     messages.success(request,'you have been successfully applied')
                     return redirect('profile')
                 else:
-                    messages.error(request,"there are some error in input")
+                    messages.error(request,"there are some error in input. check errors")
                     return render(request,'become_seller.html',{'form':form,'title':'Become Cleaner'})
 
             else:

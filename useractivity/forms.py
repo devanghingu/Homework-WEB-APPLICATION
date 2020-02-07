@@ -58,7 +58,7 @@ class CleanerForm(forms.Form):
         print(type(pincode))
         if not pincode.__class__!='int':
             raise forms.ValidationError("pincode must be in numbers")
-        elif pincode != 6:
+        if len(str(pincode)) != 6:
             raise forms.ValidationError("pincode must 6 digit")
         return pincode
     
