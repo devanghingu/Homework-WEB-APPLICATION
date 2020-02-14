@@ -62,6 +62,10 @@
 				city:{
 					required:true,
 				}, 
+				email:{
+					required:true,
+					email:true,
+				},
 				pincode: {
 					required: true,
 					digits : true,
@@ -73,6 +77,10 @@
 	  		messages: {
 				city: {
 					required:"Please select city",
+				},
+				email:{
+					required:"Email must be require",
+					email:'Email must be in standard format',
 				},
 				pincode: {
 					required: "Please provide a pincode",

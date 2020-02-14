@@ -25,7 +25,7 @@ class CleanerProfile(models.Model):
     quality_score=models.IntegerField(default=0)
     total_completed_job=models.IntegerField(default=0)
     working_city=models.ForeignKey(City,on_delete=models.SET_NULL,null=True,blank=True) #When CITY removed(it'll be null), cleaner need to work/add New city  
-    working_time_slot=models.CharField(null=True,blank=True,max_length=50) # for future purpose
+    working_time_slot= models.CharField(null=True,blank=True,max_length=50) # for future purpose
 
     def __str__(self):
         return str(self.user)

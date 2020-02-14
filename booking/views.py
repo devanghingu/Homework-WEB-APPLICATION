@@ -36,7 +36,7 @@ class Newbooking(View):
             # cleaner=CleanerProfile.objects.filter(working_city=city)
             bookingdata=bookings.objects.filter(city=city,timeslot=slot,dateofcleaning=date)  #all cleaner who working in selected city
             # print([x.customer_id for x in bookingdata])
-            cleaner=CleanerProfile.objects.filter(working_city=city).exclude(user__in=[x.cleaner_id.user for x in bookingdata]).exclude(user=request.user)
+            cleaner=CleanerProfile.objects.filter(working_city=city).exclude(user__in=[x.cleaner_id.user for x in bookingdata]).exclude(user=request.user).exclude(user__email='')
             if (cleaner.exists()==True):
                 request.session['city']=str(city)
                 request.session['date']=str(date)
@@ -84,6 +84,7 @@ class Hire(View):
                         dateofcleaning=request.session['date'],
                         timeslot=request.session['slot'])
                     context['hiredmessage']="thanks for hiring <u>{}</u>".format(cleaner.user.first_name)
+                    
                     messages.success(request,context['hiredmessage'])
                     return redirect('profile')
             else:

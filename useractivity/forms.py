@@ -37,7 +37,7 @@ class Loginform(AuthenticationForm):
 class CleanerForm(forms.Form):
     city=forms.ModelChoiceField(queryset=City.objects.all(),label='select preferred city')
     address=forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":20}),label="Address")
-
+    email=forms.EmailField(label="Your Email Address")
     pincode=forms.IntegerField(required=False,label='Pincode')
     class Meta:
         model=CleanerProfile
@@ -46,7 +46,14 @@ class CleanerForm(forms.Form):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs.update({'class':'form-control','placeholder': self.fields[field].label})
-
+    def clean_email(self):
+        email=self.cleaned_data['email']
+        emaildata=User.objects.filter(email=email)
+        if emaildata:
+            raise forms.ValidationError('Email already exist.!!')
+        return email
+        
+    
     def clean_city(self):
         city=self.cleaned_data['city']
         data=City.objects.get(name=city)
@@ -55,10 +62,8 @@ class CleanerForm(forms.Form):
         raise forms.ValidationError("select city in available city")
     def clean_pincode(self):
         pincode = self.cleaned_data["pincode"]
-        print(type(pincode))
         if not pincode.__class__!='int':
             raise forms.ValidationError("pincode must be in numbers")
         if len(str(pincode)) != 6:
             raise forms.ValidationError("pincode must 6 digit")
         return pincode
-    

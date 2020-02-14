@@ -71,6 +71,8 @@ class profile(View):
             allbooking=bookings.objects.filter(customer_id=user)
             context['allbookings']=allbooking
             if(user.is_cleaner):
+                if(user.email == ''):
+                    messages.error(request,"please update your email, otherwise your will not get any orders")
                 cleanerprofile=CleanerProfile.objects.get(user=user)
                 customerbooking=bookings.objects.filter(cleaner_id=cleanerprofile)
                 context['cleanerprofile']=cleanerprofile
@@ -102,13 +104,13 @@ class BecomeCleaner(View):
             form=CleanerForm(data=request.POST)
             if user.is_cleaner==False :
                 if form.is_valid():
-                    user.address=form.cleaned_data['address']
-                    user.pincode=form.cleaned_data['pincode']
-                    user.is_cleaner=True
-                    
-                    cleaner_profile=CleanerProfile.objects.create(user=user)
+                    user.address    = form.cleaned_data['address']
+                    user.pincode    = form.cleaned_data['pincode']
+                    user.email      = form.cleaned_data['email']
+                    user.is_cleaner =True
+                    print('email save success',user.email)
+                    cleaner_profile =CleanerProfile.objects.create(user=user)
                     cleaner_profile.working_city=form.cleaned_data['city']
-
                     cleaner_profile.save()
                     user.save()
                     messages.success(request,'you have been successfully applied')
